@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 // 1. クラス定義
 // structとほぼ同じだが、デフォルトのアクセス権が private になる点が違う。
@@ -56,6 +57,16 @@ public:
     }
 };
 
+class Bird : public Animal {
+public:
+    Bird(const std::string& n) : Animal(n) {}
+
+    void speak() const override {
+        std::cout << "Chun!Chun!" << std::endl;
+    }
+};
+
+
 int main() {
     std::cout << "--- Stack allocation ---" << std::endl;
     {
@@ -69,9 +80,20 @@ int main() {
     Animal* myPet = new Cat("Tama");
     myPet->introduce();
     myPet->speak(); // Cat::speak() が呼ばれる
-
+    
     // delete を忘れるとメモリリーク（次の章でスマートポインタを使って解決します）
     delete myPet; 
+    
+    std::cout << "\n--- Listing ---" << std::endl;
+    std::vector<Animal*> zoo;
+    zoo.push_back(new Dog("Shiro"));
+    zoo.push_back(new Cat("Kuro"));
+    zoo.push_back(new Bird("Piyo"));
+
+    for (const Animal* animal : zoo) {
+        animal->introduce();
+        animal->speak();
+    }
 
     return 0;
 }
