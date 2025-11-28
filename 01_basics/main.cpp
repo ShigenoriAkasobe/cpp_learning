@@ -38,7 +38,10 @@ int main() {
     int x = 100;
     int& ref_x = x; // x への参照
     ref_x = 200;    // x も 200 になる
+    std::cout << "x ptr: " << &x << std::endl;
     std::cout << "x: " << x << std::endl;
+    std::cout << "ref_x ptr: " << &ref_x << std::endl;
+    std::cout << "ref_x: " << ref_x << std::endl;
 
     // const 参照: コピーコストを避けつつ、書き換えを禁止する（関数の引数でよく使う）
     const std::string& read_only_name = name;
