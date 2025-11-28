@@ -95,5 +95,14 @@ int main() {
         animal->speak();
     }
 
+    // メモリ解放
+    for (Animal* animal : zoo) {
+        delete animal;
+    }
+    // zoo[0]->speak(); // エラー: 解放済みのメモリにアクセス
+    zoo.clear(); // ベクタの中身も空にして、誤アクセスを防ぐ
+
+    std::cout << "\n--- Program End ---" << std::endl;
+
     return 0;
 }
