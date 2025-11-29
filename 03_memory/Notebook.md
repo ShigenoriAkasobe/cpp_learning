@@ -71,3 +71,66 @@ Enemy e(fireTex);  // 参照カウント 3
 | :--- | :--- | :--- | :--- | :--- |
 | **unique_ptr** | **独占** (1人) | ゼロ | **高 (デフォルト)** | 「俺のもの」 (貸すときは `get()` で生のポインタを見せる) |
 | **shared_ptr** | **共有** (複数) | あり | **中 (必要な時だけ)** | 「みんなのもの」 (最後の1人が電気を消す) |
+
+## デザインパターン補足
+
+### 1. Factory パターン (工場)
+
+**「オブジェクトの生成を専門の関数（工場）に任せる」** 考え方です。
+
+*   **メリット**:
+    *   使う側は `new Cat()` なのか `new Dog()` なのかを知らなくていい。
+    *   「条件によって作るものを変える」ロジックを一箇所にまとめられる。
+
+**例: モンスター生成工場**
+```cpp
+// 使う側は「モンスターをくれ」と言うだけ
+std::unique_ptr<Monster> createMonster(string type) {
+    if (type == "slime") return std::make_unique<Slime>();
+    if (type == "dragon") return std::make_unique<Dragon>();
+    return nullptr;
+}
+
+// main側
+auto m = createMonster("dragon"); // 何が返ってくるかはお楽しみ
+```
+
+### 2. コンポジション (Composition)
+
+**「クラスの中に別のクラスのオブジェクトを持つ」** ことです。
+継承 (`is-a` 関係) ではなく、**「持っている (`has-a`) 関係」** を表します。
+
+*   **メリット**:
+    *   継承よりも柔軟に機能を組み合わせられる。
+    *   部品の入れ替えが簡単。
+
+**例: 車とエンジン**
+車はエンジンを「継承」するのではなく、「持っている」のが自然です。
+
+```cpp
+class Engine {
+public:
+    void start() { cout << "Vroom!" << endl; }
+};
+
+class Car {
+    // Car は Engine を「所有」している (コンポジション)
+    // Car が廃棄されたら Engine も一緒に廃棄される運命共同体
+    std::unique_ptr<Engine> engine; 
+
+public:
+    Car() : engine(std::make_unique<Engine>()) {}
+
+    void drive() {
+        cout << "Car starts: ";
+        engine->start(); // 持っているエンジンを使う
+    }
+};
+
+// main関数での使用イメージ
+{
+    Car myCar;
+    myCar.drive(); 
+} // ここで myCar が破棄される -> engine も自動的に破棄される
+```
+ここで `unique_ptr` を使うことで、「車が壊れたらエンジンも一緒にスクラップ」という**所有権と寿命の連動**を表現できます。

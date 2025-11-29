@@ -20,6 +20,25 @@ private:
     int number_;
 };
 
+class Engine {
+public:
+    void start() { std::cout << "Vroom!" << std::endl; }
+};
+
+class Car {
+    // Car は Engine を「所有」している (コンポジション)
+    // Car が廃棄されたら Engine も一緒に廃棄される運命共同体
+    std::unique_ptr<Engine> engine; 
+
+public:
+    Car() : engine(std::make_unique<Engine>()) {}
+
+    void drive() {
+        std::cout << "Car starts: ";
+        engine->start(); // 持っているエンジンを使う
+    }
+};
+
 // 1. RAII (Resource Acquisition Is Initialization)
 // リソースの確保と解放をオブジェクトの寿命に紐付ける考え方。
 // スコープを抜けるとデストラクタが呼ばれ、自動的に解放される。
@@ -64,12 +83,24 @@ void shared_pointer_demo() {
     resA->use();
 } // ここで resA が破棄され、カウントが0になりリソース解放
 
+void composition_example() {
+    // 4. コンポジションの例
+    std::cout << "--- Composition Example ---" << std::endl;
+    {
+        Car myCar;
+        myCar.drive(); 
+    } // ここで myCar が破棄される -> engine も自動的に破棄される
+}
+
 int main() {
     raw_pointer_risk();
     std::cout << std::endl;
     smart_pointer_safety();
     std::cout << std::endl;
     shared_pointer_demo();
-
+    std::cout << std::endl;
+    composition_example();
+    
+    std::cout << "--- Program End ---" << std::endl;
     return 0;
 }
