@@ -9,7 +9,8 @@ Python, C言語, ShellScript などの経験がある開発者が、モダンな
 | :--- | :--- | :--- |
 | **00_setup** | 環境構築 | CMake, Hello World, コンパイル環境確認 |
 | **01_basics** | 基本文法 | `namespace`, `auto`, `std::string`, 範囲for, 参照, 例外処理 |
-| **02_oop** | オブジェクト指向 | クラス, コンストラクタ, 継承, 仮想関数, 多態性 |
+| **02_1_structs** | クラス/構造体 基礎 | **struct と class の違い**, アクセス修飾, 初期化, `const` メンバ関数 |
+| **02_2_oop** | オブジェクト指向 | クラス設計, コンストラクタ, 継承, 仮想関数, 多態性 |
 | **03_memory** | メモリ管理 (重要) | **RAII**, スマートポインタ (`unique_ptr`, `shared_ptr`), 所有権の移動 |
 | **04_templates** | テンプレート | 関数/クラステンプレート, コンセプト (C++20) |
 | **05_stl** | 標準ライブラリ | `std::vector`, `std::map`, アルゴリズム, `std::filesystem` |
