@@ -23,6 +23,9 @@ private:
 class Engine {
 public:
     void start() { std::cout << "Vroom!" << std::endl; }
+    ~Engine() {
+        std::cout << "Engine destroyed!" << std::endl;
+    }
 };
 
 class Car {
