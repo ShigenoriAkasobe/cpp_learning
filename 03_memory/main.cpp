@@ -23,6 +23,9 @@ private:
 class Engine {
 public:
     void start() { std::cout << "Vroom!" << std::endl; }
+    Engine() {
+        std::cout << "Engine created!" << std::endl;
+    }
     ~Engine() {
         std::cout << "Engine destroyed!" << std::endl;
     }
@@ -34,8 +37,12 @@ class Car {
     std::unique_ptr<Engine> engine; 
 
 public:
-    Car() : engine(std::make_unique<Engine>()) {}
-
+    Car() : engine(std::make_unique<Engine>()) {
+        std::cout << "Car created!" << std::endl;
+    }
+    ~Car() {
+        std::cout << "Car destroyed!" << std::endl;
+    }
     void drive() {
         std::cout << "Car starts: ";
         engine->start(); // 持っているエンジンを使う
