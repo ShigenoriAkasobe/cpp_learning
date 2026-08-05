@@ -41,7 +41,9 @@ int main() {
 
     // クラステンプレートの使用
     Box<int> intBox(123);
+    Box<int> intBox2{456};
     std::cout << "Box value: " << intBox.get() << std::endl;
+    std::cout << "Box value: " << intBox2.get() << std::endl;
 
     Box<std::string> strBox("Hello Template");
     std::cout << "Box value: " << strBox.get() << std::endl;

@@ -6,6 +6,7 @@
   - [初期化：集成体初期化（aggregate）とコンストラクタ](#初期化集成体初期化aggregateとコンストラクタ)
     - [struct の典型：データ構造（集成体）として使う](#struct-の典型データ構造集成体として使う)
     - [class の典型：不変条件（invariant）を守る](#class-の典型不変条件invariantを守る)
+    - [`explicit` とメンバ初期化子リスト（`: balance_(initial_balance)`）](#explicit-とメンバ初期化子リスト-balance_initial_balance)
   - [メンバ関数と const](#メンバ関数と-const)
   - [static（クラスに属するもの）](#staticクラスに属するもの)
   - [使い分けの現実的な指針](#使い分けの現実的な指針)
@@ -80,6 +81,60 @@ public:
 
 - `balance_` を `private` にすることで、外部から直接書き換えできなくなります
 - `explicit` は「意図しない暗黙変換」を防ぐための保険です
+
+#### `explicit` とメンバ初期化子リスト（`: balance_(initial_balance)`）
+
+対象のコード（[main.cpp](main.cpp) より）:
+
+```cpp
+explicit BankAccount(int initial_balance) : balance_(initial_balance) {}
+```
+
+この1行は、大きく2つの意味を持っています。
+
+1) `explicit`（暗黙変換を禁止する）
+
+`explicit` を付けないと、引数が1つのコンストラクタは「暗黙変換」に使われることがあります。
+
+例（`explicit` が無い場合に起きうること）:
+
+```cpp
+void print_account(BankAccount a);
+
+print_account(100); // int -> BankAccount への暗黙変換でコンパイルできてしまう可能性
+```
+
+これが便利な場面もありますが、学習段階や安全重視の設計では「意図しない変換」はバグの温床になりがちです。
+そのため `explicit` を付けて、
+
+```cpp
+print_account(BankAccount{100});
+```
+
+のように「明示的に作った」場合だけ通す、という設計にします。
+
+2) `: balance_(initial_balance)`（メンバ初期化子リスト）
+
+`balance_(initial_balance)` は **代入ではなく初期化** です。
+コンストラクタ本体 `{}` に入る前にメンバを初期化します。
+
+同じ見た目でも、次の2つは意味が違います。
+
+```cpp
+// 初期化（推奨）: 生成と同時に値を入れる
+BankAccount(int x) : balance_(x) {}
+
+// 代入（非推奨になりがち）: いったんデフォルト初期化→あとから代入
+BankAccount(int x) { balance_ = x; }
+```
+
+特に以下のメンバを持つ場合、初期化子リストは「必須」になります。
+
+- `const` メンバ（後から代入できない）
+- 参照メンバ（後から付け替えできない）
+- デフォルトコンストラクタを持たない型
+
+なので、C++では「コンストラクタの初期化は初期化子リストでやる」が基本形です。
 
 ## メンバ関数と const
 
