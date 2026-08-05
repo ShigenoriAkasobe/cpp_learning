@@ -26,10 +26,26 @@ int main() {
 
     // 4. 範囲 for 文 (Range-based for loop)
     // Pythonの for item in list: に近い書き方。
+    // コンテナの要素を先頭から順番に1つずつ取り出す。
     std::vector<int> numbers = {1, 2, 3, 4, 5};
     std::cout << "Numbers: ";
-    for (int n : numbers) {
-        std::cout << n << " ";
+    for (int number : numbers) {
+        std::cout << number << " ";
+    }
+    std::cout << std::endl;
+
+    // 上の範囲for文は、添字を使う次のfor文に近い。
+    // for (std::size_t i = 0; i < numbers.size(); ++i) {
+    //     std::cout << numbers[i] << " ";
+    // }
+
+    // 要素を書き換える場合は、参照（&）で受け取る。
+    for (int& number : numbers) {
+        number *= 2;
+    }
+    std::cout << "Doubled numbers: ";
+    for (const int number : numbers) {
+        std::cout << number << " ";
     }
     std::cout << std::endl;
 
