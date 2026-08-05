@@ -50,7 +50,13 @@ public:
 
 class Cat : public Animal {
 public:
-    Cat(const std::string& n) : Animal(n) {}
+    Cat(const std::string& n) : Animal(n) {
+        std::cout << "Cat constructor" << std::endl;
+    }
+
+    ~Cat() override {
+        std::cout << "Cat destructor" << std::endl;
+    }
 
     void speak() const override {
         std::cout << "Meow!" << std::endl;
@@ -59,7 +65,13 @@ public:
 
 class Bird : public Animal {
 public:
-    Bird(const std::string& n) : Animal(n) {}
+    Bird(const std::string& n) : Animal(n) {
+        std::cout << "Bird constructor" << std::endl;
+    }
+
+    ~Bird() override {
+        std::cout << "Bird destructor" << std::endl;
+    }
 
     void speak() const override {
         std::cout << "Chun!Chun!" << std::endl;
