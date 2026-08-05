@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <utility>
 
 // 02_1_structs: struct と class の基礎
 // - struct と class の違いは「デフォルトのアクセス権」
