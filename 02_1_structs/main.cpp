@@ -9,6 +9,7 @@
 // - struct と class の違いは「デフォルトのアクセス権」
 // - struct は「ただのデータ」の表現に向く
 // - class は「不変条件を守る」設計に向く
+// - () と {} の初期化の違いを知る
 
 // 典型的な struct: ただのデータ（集成体）
 struct Point {
@@ -108,6 +109,23 @@ int main() {
     {
         Point p{3.0, 4.0};
         std::cout << "Point(" << p.x << ", " << p.y << ") squared_length=" << p.squared_length() << std::endl;
+    }
+
+    std::cout << "\n--- initialization: () and {} ---" << std::endl;
+    {
+        Point point_with_parentheses(3.0, 4.0);
+        Point point_with_braces{3.0, 4.0};
+        std::cout << "Point with (): (" << point_with_parentheses.x << ", "
+                  << point_with_parentheses.y << ")" << std::endl;
+        std::cout << "Point with {}: (" << point_with_braces.x << ", "
+                  << point_with_braces.y << ")" << std::endl;
+
+        BankAccount account_with_parentheses(100);
+        BankAccount account_with_braces{100};
+        std::cout << "BankAccount with (): " << account_with_parentheses.balance() << std::endl;
+        std::cout << "BankAccount with {}: " << account_with_braces.balance() << std::endl;
+
+        // BankAccount invalid{100.5}; // エラー: {} は縮小変換を許可しない
     }
 
     std::cout << "\n--- class basics (encapsulation) ---" << std::endl;
